@@ -13,25 +13,25 @@ import random
 import string
 import json
 import bcrypt
-
-
+ 
+ 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
-
+ 
 users = {}
-
+ 
 PATH = os.path.dirname(os.path.realpath(__file__))
-
-
+ 
+ 
 BUTTON_COLOR = "#fedd03"
 BUTTON_COLOR_HOVER = "#ffc800"
-
+ 
 current_user = ["", ""]
-
+ 
 class App(customtkinter.CTk):
 	WIDTH = 930
 	HEIGHT = 600
-
+ 
 	def __init__(self):
 		super().__init__()
 
@@ -42,50 +42,48 @@ class App(customtkinter.CTk):
 				users = json.load(infile)
 			except Exception as e:
 				pass
-
+ 
 		self.title("Astra")
 		self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
 		self.minsize(App.WIDTH, App.HEIGHT)
 		self.protocol("WM_DELETE_WINDOW", self.on_closing)  # call .on_closing() when app gets closed
 		container = customtkinter.CTkFrame(self)
 		container.pack(side = "top", fill = "both", expand = True)
-
+ 
 		container.grid_rowconfigure(0, weight = 1)
 		container.grid_columnconfigure(0, weight = 1)
-
+ 
 		self.frames = {}
-
+ 
 		for F in (LoginPage, CapturePage):
-
+ 
 			frame = F(container, self)
 			self.frames[F] = frame
-
+ 
 			frame.grid(row=0, column=0, sticky ="nsew")
-
+ 
 		self.show_page(LoginPage)
-
+ 
 	def show_page(self, cont):
 		frame = self.frames[cont]
 		frame.tkraise()
-
-
+ 
 	def on_closing(self, event=0):
 		with open("users.json", "w+") as outfile:
 			json.dump(users, outfile)
 		self.destroy()
-
+ 
 class LoginPage(customtkinter.CTkFrame):
 	def __init__(self, parent, controller):
 		super().__init__(master = parent)
 		self.controller = controller
-  
+   
 		self.grid_rowconfigure(0, weight=1)
 		self.grid_columnconfigure(0, weight=1)
-
+ 
 		self.grid_rowconfigure((0, 9), weight=1)
 		self.grid_columnconfigure(0, weight=1)
-
-		
+ 
 		self.button = customtkinter.CTkButton(self, text ="AI Virtual Mouse",
 				)
 		self.button.grid(row=7, column=0, sticky="n")
@@ -469,8 +467,8 @@ class CapturePage(customtkinter.CTkFrame):
 		global current_user
 		current_user = ["", ""]
 		self.controller.show_page(LoginPage)
-
-
+ 
+ 
 if __name__ == "__main__":
 	app = App()
 	app.mainloop()
